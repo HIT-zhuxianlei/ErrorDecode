@@ -53,21 +53,12 @@ class VariableSaver(Generic[T]):
         try:
             with open(self.file_path, 'r', encoding='utf-8') as f:
                 loaded_data = json.load(f)
-            print(f"成功从 {self.file_path} 加载 {len(loaded_data)} 个变量")
             return loaded_data
         except Exception as e:
             print(f"加载文件时出错: {e}")
             return {}
     
     def load_single(self, variable_name: str) -> Optional[List[List[T]]]:
-        """加载指定名称的变量
-        
-        Args:
-            variable_name: 要加载的变量名称
-        
-        Returns:
-            指定名称的变量，如果不存在则返回None
-        """
         all_vars = self.load()
         return all_vars.get(variable_name)
     
@@ -81,28 +72,18 @@ class VariableSaver(Generic[T]):
         return list(all_vars.keys())
     
     def delete(self, *variable_names: str) -> bool:
-        """删除指定名称的变量
-        
-        Args:
-            *variable_names: 要删除的变量名称，可以指定多个
-        
-        Returns:
-            如果至少有一个变量被成功删除，返回True；否则返回False
-        """
         if not variable_names:
             print("未指定要删除的变量名称")
             return False
             
         all_vars = self.load()
         print(f"已加载 {len(all_vars)} 个变量")
-        print(all_vars)
         if not all_vars:
             print("文件中没有变量可删除")
             return False
             
         deleted = False
         for name in variable_names:
-            print(f"正在遍历变量: {name}")
             if name in all_vars:
                 del all_vars[name]
                 deleted = True
@@ -121,11 +102,6 @@ class VariableSaver(Generic[T]):
             return False
     
     def clear(self) -> bool:
-        """清空文件中的所有变量
-        
-        Returns:
-            如果文件存在且被成功清空，返回True；否则返回False
-        """
         if not os.path.exists(self.file_path):
             print("文件不存在，无需清空")
             return False
@@ -162,12 +138,13 @@ class DataDefineManager(QListWidget, Ui_DataDefineManager):
             checkbox = CheckBox(define_name)
             self.listWidget_data_define.addItem(item)
             self.listWidget_data_define.setItemWidget(item, checkbox)
-    
+
     def  data_define_delete(self):
         for index in range(self.listWidget_data_define.count()):
             item = self.listWidget_data_define.item(index)
             checkbox = self.listWidget_data_define.itemWidget(item)
             if checkbox.isChecked():
-                print(checkbox.text())
                 self.saver.delete(checkbox.text())
-        
+                self.listWidget_data_define.takeItem(index)  # 移除item
+                
+                

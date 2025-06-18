@@ -18,7 +18,20 @@ from error_decode import ErrorDecode
 # 变量定义存取
 from data_define_manager import VariableSaver, DataDefineManager
 
-class Widget(QFrame):
+# 使用教程字符串
+usage_text = """
+使用方法：
+1 .解码->变量定义->输入代码中的变量定义,尽量包含 { 和 }\n
+2. } 后面的变量名会自动解析;\n
+3. 手动更改变量名,随后点击按钮进行保存(重名会覆盖);\n
+4. 保存后的变量定义会保存到本地,新建页面或重启即可在已保存定义中看到;\n
+5. 数据管理页面可对已经保存的变量进行删除操作;\n
+6. 软件最上面有类似浏览器的设计,可同时打开多个标签页;\n
+7. 有些按钮没实现具体功能,毕竟时间和精力有限;\n
+8. 觉得好用的话,可以大喊“少爷NB!"
+"""
+
+class PhotoWidget(QFrame):
     def __init__(self, text: str, parent=None):
         super().__init__(parent=parent)
         self.label = SubtitleLabel(text, self)
@@ -27,6 +40,17 @@ class Widget(QFrame):
         setFont(self.label, 24)
         self.label.setAlignment(Qt.AlignCenter)
         self.hBoxLayout.addWidget(self.label, 1, Qt.AlignCenter)
+        self.setObjectName(text.replace(' ', '-'))
+        
+class TextWidget(QFrame):
+    def __init__(self, text: str, parent=None):
+        super().__init__(parent=parent)
+        self.label = SubtitleLabel(text, self)
+        self.hBoxLayout = QHBoxLayout(self)
+
+        setFont(self.label, 24)
+        self.label.setAlignment(Qt.AlignLeft)
+        self.hBoxLayout.addWidget(self.label, 1, Qt.AlignLeft)
         self.setObjectName(text.replace(' ', '-'))
         
 class CustomTitleBar(MSFluentTitleBar):
@@ -93,7 +117,7 @@ class Window(MSFluentWindow):
         # create sub interface
         self.homeInterface = QStackedWidget(self, objectName='homeInterface')
         self.appInterface = DataDefineManager('DataDefineManager Interface', self)
-        self.photoInterface = Widget('Video Interface', self)
+        self.photoInterface = PhotoWidget('Video Interface', self)
         
         pixmap = QPixmap("./resource/青语.png")  # 替换为你的图片路径
         # 调整图片大小（保持比例）
@@ -104,8 +128,10 @@ class Window(MSFluentWindow):
         )
         self.photoInterface.label.setPixmap(scaled_pixmap)
         
-        self.libraryInterface = Widget('library Interface', self)
-
+        self.libraryInterface = TextWidget('library Interface', self)
+        self.libraryInterface.label.setText(usage_text)
+        
+        
         self.initNavigation()
         self.initWindow()
 
@@ -115,7 +141,7 @@ class Window(MSFluentWindow):
         self.addSubInterface(self.photoInterface, FIF.PHOTO, '青语')
 
         self.addSubInterface(self.libraryInterface, FIF.BOOK_SHELF,
-                             '库', FIF.LIBRARY_FILL, NavigationItemPosition.BOTTOM)
+                             '教程', FIF.LIBRARY_FILL, NavigationItemPosition.BOTTOM)
         self.navigationInterface.addItem(
             routeKey='Help',
             icon=FIF.HELP,
@@ -137,7 +163,7 @@ class Window(MSFluentWindow):
     def initWindow(self):
         self.resize(1100, 750)
         self.setWindowIcon(QIcon(':/qfluentwidgets/images/logo.png'))
-        self.setWindowTitle('Error Encode')
+        self.setWindowTitle('Error Dcode')
 
         # 设置窗口尺寸
         desktop = QApplication.desktop().availableGeometry()
@@ -147,15 +173,12 @@ class Window(MSFluentWindow):
     def showMessageBox(self):
         w = MessageBox(
             '作者:Lay.zhu',
-            '本项目基于Fluent Widgets开发',
+            '本项目基于Fluent Widgets开发\n这么简单的工具还想要帮助?',
             self
         )
         w.yesButton.setText('点这个按钮')
         w.cancelButton.setText('别听他的,点我!')
-
-        # if w.exec():
-        #     QDesktopServices.openUrl(QUrl("https://afdian.net/a/zhiyiYo"))
-
+        w.exec()
     # 页面切换逻辑
     def onTabChanged(self, index: int):
         objectName = self.tabBar.currentTab().routeKey()

@@ -3,6 +3,7 @@
 from PyQt5.QtWidgets import  QFrame
 import re
 from PyQt5.QtWidgets import  QTableWidget, QTableWidgetItem
+from PyQt5.QtGui import QFont
 
 from qfluentwidgets import TableWidget
 # 导入UI界面
@@ -22,13 +23,12 @@ class ErrorDecode(QFrame, Ui_ErrorDecode):
         self.circular_queue = deque(maxlen=6)        
         self.data_define_name = 'data_define'
         
+        # 初始化按钮
+        self.lineEdit_input_num.setClearButtonEnabled(True)
         
-        # 初始化json文件
-        self.saver = VariableSaver("data_define.json")
-        
-        # 初始化列表
-        json_data_defines  = self.saver.list_variables()
-        self.comboBox_data_define.addItems(json_data_defines)
+        # 初始化数字标签
+        font = QFont("Arial", 14)
+        self.label_num.setFont(font)
         
         # 初始化表格
         self.widget_table.setBorderVisible(True)
@@ -36,18 +36,34 @@ class ErrorDecode(QFrame, Ui_ErrorDecode):
         self.widget_table.setWordWrap(False)
         self.widget_table.setRowCount(6)
         self.widget_table.setColumnCount(4)
+        self.widget_table.setColumnWidth(0,240)
         self.widget_table.setItem(0, 0, QTableWidgetItem('变量'))
         self.widget_table.setItem(0, 1, QTableWidgetItem('位宽'))
         self.widget_table.setItem(0, 2, QTableWidgetItem('解析值'))
         
+        # 初始化json文件
+        self.saver = VariableSaver("data_define.json")
+        
+        # 初始化列表
+        json_data_defines  = self.saver.list_variables()
+        if  len(json_data_defines) > 0:
+            self.comboBox_data_define.addItems(json_data_defines)
+            self.data_define_load()
+            
         # 初始化信号与槽
         self.lineEdit_input_num.textChanged.connect(self.num_analyze)
         self.lineEdit_data_define_name.textChanged.connect(self.name_analyze)
         self.textEdit_data_struct.textChanged.connect(self.struct_analyze)
         self.pushButton.clicked.connect(self.data_define_save)
+        self.comboBox_data_define.currentTextChanged.connect(self.data_define_load)
 
+    def data_define_load(self):
+        self.data_define_name = self.comboBox_data_define.currentText()
+        self.assigned_values = self.saver.load_single(self.data_define_name)
+        self.log('数据定义已加载')
+        self.decode()
     def data_define_save(self):
-        if len(self.assigned_values) :
+        if self.assigned_values is not None and len(self.assigned_values) > 0:
             self.log('变量定义名:'+self.data_define_name)
             self.saver.save(self.data_define_name, self.assigned_values)
     def struct_analyze(self):
@@ -81,20 +97,27 @@ class ErrorDecode(QFrame, Ui_ErrorDecode):
                 self.log('检测为16进制数据')
                 self.number = int(num_str, 16)
                 self.decode()
+                self.label_num.setText(f"DEC: {self.number} | HEX: 0x{self.number:X}")
                 return
             except ValueError:
                 pass
         
         # 默认为十进制
-        try:
-            self.log('检测为10进制数据')
-            self.number = int(num_str, 10)
-            self.decode()
-        except ValueError:
-            self.number = 0
+        num_chars = set('0123456789')
+        if any(c in num_chars for c in num_str):
+            try:
+                self.log('检测为10进制数据')
+                self.number = int(num_str, 10)
+                self.decode()
+            except ValueError:
+                self.number = 0
+        else:
+            self.log('你好好看看输入的是啥东西!')
+            
+        self.label_num.setText(f"DEC: {self.number} | HEX: 0x{self.number:X}")
         return
     def decode(self):
-        if  (self.number == None) or (len(self.assigned_values) == 0):
+        if (self.assigned_values is None):
             return
         result = self.assign_bits_to_variables(self.number,self.assigned_values)
         table_row_cnt = 1
@@ -106,7 +129,7 @@ class ErrorDecode(QFrame, Ui_ErrorDecode):
             self.widget_table.setItem(table_row_cnt, 2, QTableWidgetItem(str(result[res][1])))
             table_row_cnt = table_row_cnt + 1
 
-        self.log('解析完了,希望结果是对的~')
+        self.log('解析完咯~')
     # 去除花括号之外的数据
     def strip_external_braces (self, s):
         start_index = s.find("{")

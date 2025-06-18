@@ -13,25 +13,12 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="PushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>490</x>
-     <y>510</y>
-     <width>91</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Shoooot!</string>
-   </property>
-  </widget>
   <widget class="TableWidget" name="widget_table" native="true">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>100</y>
-     <width>621</width>
+     <x>490</x>
+     <y>80</y>
+     <width>501</width>
      <height>361</height>
     </rect>
    </property>
@@ -42,7 +29,7 @@
      <x>10</x>
      <y>70</y>
      <width>461</width>
-     <height>301</height>
+     <height>371</height>
     </rect>
    </property>
    <property name="title">
@@ -53,8 +40,8 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>431</width>
-      <height>271</height>
+      <width>441</width>
+      <height>341</height>
      </rect>
     </property>
    </widget>
@@ -62,10 +49,10 @@
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>570</y>
-     <width>361</width>
-     <height>71</height>
+     <x>10</x>
+     <y>550</y>
+     <width>461</width>
+     <height>101</height>
     </rect>
    </property>
    <property name="title">
@@ -76,8 +63,8 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>331</width>
-      <height>41</height>
+      <width>441</width>
+      <height>61</height>
      </rect>
     </property>
    </widget>
@@ -85,10 +72,10 @@
   <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>470</y>
+     <x>490</x>
+     <y>460</y>
      <width>261</width>
-     <height>80</height>
+     <height>81</height>
     </rect>
    </property>
    <property name="title">
@@ -97,7 +84,7 @@
    <widget class="LineEdit" name="lineEdit_input_num">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>30</y>
       <width>231</width>
       <height>31</height>
@@ -108,9 +95,9 @@
   <widget class="QGroupBox" name="groupBox_4">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>380</y>
-     <width>261</width>
+     <x>10</x>
+     <y>460</y>
+     <width>461</width>
      <height>80</height>
     </rect>
    </property>
@@ -127,15 +114,54 @@
      </rect>
     </property>
    </widget>
+   <widget class="PushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>30</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>保存变量定义</string>
+    </property>
+   </widget>
   </widget>
   <widget class="ComboBox" name="comboBox_data_define">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>130</x>
      <y>20</y>
-     <width>171</width>
+     <width>201</width>
      <height>31</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>已保存定义</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_num">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>570</y>
+     <width>461</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DEC:0    HEX:0</string>
    </property>
   </widget>
  </widget>
