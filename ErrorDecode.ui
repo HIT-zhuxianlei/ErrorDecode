@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>ErrorDecode</class>
+ <widget class="QDialog" name="ErrorDecode">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>706</width>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,43 +16,43 @@
   <widget class="PushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>60</y>
-     <width>75</width>
-     <height>23</height>
+     <x>380</x>
+     <y>250</y>
+     <width>91</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>Shoooot!</string>
    </property>
   </widget>
-  <widget class="TextBroswer" name="textBrowser">
+  <widget class="TextBrowser" name="textBrowser_output">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>340</x>
      <y>10</y>
      <width>256</width>
      <height>192</height>
     </rect>
    </property>
   </widget>
-  <widget class="PlainTextEdit" name="plainTextEdit">
+  <widget class="LineEdit" name="lineEdit_input_num">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>220</y>
-     <width>201</width>
+     <x>70</x>
+     <y>240</y>
+     <width>231</width>
      <height>31</height>
     </rect>
    </property>
   </widget>
-  <widget class="PlainTextEdit" name="plainTextEdit_2">
+  <widget class="TextEdit" name="textEdit_data_struct">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>260</y>
-     <width>201</width>
-     <height>31</height>
+     <x>20</x>
+     <y>20</y>
+     <width>291</width>
+     <height>191</height>
     </rect>
    </property>
   </widget>
@@ -64,13 +64,18 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>TextBroswer</class>
+   <class>TextBrowser</class>
    <extends>QTextBrowser</extends>
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>PlainTextEdit</class>
-   <extends>QPlainTextEdit</extends>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>TextEdit</class>
+   <extends>QTextEdit</extends>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>

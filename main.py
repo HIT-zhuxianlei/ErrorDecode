@@ -4,7 +4,7 @@ from PyQt5 import QtGui
 
 from PyQt5.QtCore import Qt, QSize, QUrl, QPoint
 from PyQt5.QtGui import QIcon, QDesktopServices, QColor
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QApplication, QFrame, QStackedWidget
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QApplication, QFrame, QWidget, QStackedWidget
 
 from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar, MSFluentWindow,
                             TabBar, SubtitleLabel, setFont, TabCloseButtonDisplayMode, IconWidget,
@@ -12,9 +12,9 @@ from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar
 from qfluentwidgets import FluentIcon as FIF
 from qframelesswindow import AcrylicWindow
 
-
+# Error_decode 组件
+from error_decode import ErrorDecode
 class Widget(QFrame):
-
     def __init__(self, text: str, parent=None):
         super().__init__(parent=parent)
         self.label = SubtitleLabel(text, self)
@@ -24,20 +24,6 @@ class Widget(QFrame):
         self.label.setAlignment(Qt.AlignCenter)
         self.hBoxLayout.addWidget(self.label, 1, Qt.AlignCenter)
         self.setObjectName(text.replace(' ', '-'))
-
-
-class TabInterface(QFrame):
-    """ Tab interface """
-    def __init__(self, text: str, objectName, parent=None):
-        super().__init__(parent=parent)
-        self.label = SubtitleLabel(text, self)
-
-        self.vBoxLayout = QVBoxLayout(self)
-        self.vBoxLayout.setSpacing(30)
-        self.vBoxLayout.addWidget(self.label, 0, Qt.AlignCenter)
-        setFont(self.label, 24)
-
-        self.setObjectName(objectName)
         
 class CustomTitleBar(MSFluentTitleBar):
     """ Title bar with icon and title """
@@ -159,16 +145,18 @@ class Window(MSFluentWindow):
     # 页面切换逻辑
     def onTabChanged(self, index: int):
         objectName = self.tabBar.currentTab().routeKey()
-        self.homeInterface.setCurrentWidget(self.findChild(TabInterface, objectName))
-        self.stackedWidget.setCurrentWidget(self.homeInterface)
-
+        widget = self.findChild(ErrorDecode, objectName)
+        if widget:
+            self.homeInterface.setCurrentWidget(widget)
+        else:
+            print(f"Widget with objectName {objectName} not found in stack.")
     def onTabAddRequested(self):
         text = f'功德+{self.tabBar.count()}'
         self.addTab(text, text)
 
     def addTab(self, routeKey, text):
         self.tabBar.addTab(routeKey, text)
-        self.homeInterface.addWidget(TabInterface(text, routeKey, self))
+        self.homeInterface.addWidget(ErrorDecode(text, routeKey, self))
 
 
 if __name__ == '__main__':
