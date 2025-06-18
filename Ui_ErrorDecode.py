@@ -14,19 +14,22 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ErrorDecode(object):
     def setupUi(self, ErrorDecode):
         ErrorDecode.setObjectName("ErrorDecode")
-        ErrorDecode.resize(706, 516)
+        ErrorDecode.resize(800, 700)
         self.pushButton = PushButton(ErrorDecode)
-        self.pushButton.setGeometry(QtCore.QRect(380, 250, 91, 31))
+        self.pushButton.setGeometry(QtCore.QRect(510, 420, 91, 31))
         self.pushButton.setObjectName("pushButton")
         self.textBrowser_output = TextBrowser(ErrorDecode)
-        self.textBrowser_output.setGeometry(QtCore.QRect(340, 10, 256, 192))
+        self.textBrowser_output.setGeometry(QtCore.QRect(20, 310, 371, 161))
         self.textBrowser_output.setObjectName("textBrowser_output")
         self.lineEdit_input_num = LineEdit(ErrorDecode)
-        self.lineEdit_input_num.setGeometry(QtCore.QRect(70, 240, 231, 31))
+        self.lineEdit_input_num.setGeometry(QtCore.QRect(510, 340, 231, 31))
         self.lineEdit_input_num.setObjectName("lineEdit_input_num")
         self.textEdit_data_struct = TextEdit(ErrorDecode)
-        self.textEdit_data_struct.setGeometry(QtCore.QRect(20, 20, 291, 191))
+        self.textEdit_data_struct.setGeometry(QtCore.QRect(20, 20, 371, 191))
         self.textEdit_data_struct.setObjectName("textEdit_data_struct")
+        self.widget_table = TableWidget(ErrorDecode)
+        self.widget_table.setGeometry(QtCore.QRect(450, 20, 311, 291))
+        self.widget_table.setObjectName("widget_table")
 
         self.retranslateUi(ErrorDecode)
         QtCore.QMetaObject.connectSlotsByName(ErrorDecode)
@@ -35,4 +38,4 @@ class Ui_ErrorDecode(object):
         _translate = QtCore.QCoreApplication.translate
         ErrorDecode.setWindowTitle(_translate("ErrorDecode", "Dialog"))
         self.pushButton.setText(_translate("ErrorDecode", "Shoooot!"))
-from qfluentwidgets import LineEdit, PushButton, TextBrowser, TextEdit
+from qfluentwidgets import LineEdit, PushButton, TableWidget, TextBrowser, TextEdit
