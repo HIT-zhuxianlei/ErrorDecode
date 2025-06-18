@@ -3,7 +3,7 @@ import sys
 from PyQt5 import QtGui
 
 from PyQt5.QtCore import Qt, QSize, QUrl, QPoint
-from PyQt5.QtGui import QIcon, QDesktopServices, QColor
+from PyQt5.QtGui import QIcon, QDesktopServices, QColor, QPixmap
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QApplication, QFrame, QWidget, QStackedWidget
 
 from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar, MSFluentWindow,
@@ -14,6 +14,10 @@ from qframelesswindow import AcrylicWindow
 
 # Error_decode 组件
 from error_decode import ErrorDecode
+
+# 变量定义存取
+from data_define_manager import VariableSaver, DataDefineManager
+
 class Widget(QFrame):
     def __init__(self, text: str, parent=None):
         super().__init__(parent=parent)
@@ -88,17 +92,27 @@ class Window(MSFluentWindow):
 
         # create sub interface
         self.homeInterface = QStackedWidget(self, objectName='homeInterface')
-        self.appInterface = Widget('Application Interface', self)
-        self.videoInterface = Widget('Video Interface', self)
+        self.appInterface = DataDefineManager('DataDefineManager Interface', self)
+        self.photoInterface = Widget('Video Interface', self)
+        
+        pixmap = QPixmap("./resource/青语.png")  # 替换为你的图片路径
+        # 调整图片大小（保持比例）
+        scaled_pixmap = pixmap.scaled(
+            800, 600,  # 目标尺寸
+            Qt.KeepAspectRatio,  # 保持宽高比
+            Qt.SmoothTransformation  # 平滑缩放
+        )
+        self.photoInterface.label.setPixmap(scaled_pixmap)
+        
         self.libraryInterface = Widget('library Interface', self)
 
         self.initNavigation()
         self.initWindow()
 
     def initNavigation(self):
-        self.addSubInterface(self.homeInterface, FIF.HOME, '主页', FIF.HOME_FILL)
-        self.addSubInterface(self.appInterface, FIF.APPLICATION, '应用')
-        self.addSubInterface(self.videoInterface, FIF.VIDEO, '视频')
+        self.addSubInterface(self.homeInterface, FIF.HOME, '解码', FIF.HOME_FILL)
+        self.addSubInterface(self.appInterface, FIF.DICTIONARY, '数据管理')
+        self.addSubInterface(self.photoInterface, FIF.PHOTO, '青语')
 
         self.addSubInterface(self.libraryInterface, FIF.BOOK_SHELF,
                              '库', FIF.LIBRARY_FILL, NavigationItemPosition.BOTTOM)
